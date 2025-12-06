@@ -1,0 +1,25 @@
+name: RDP Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check TermService
+        run: |
+          Get-Service TermService
+
+      - name: Try to start RDP service
+        run: |
+          Start-Service TermService
+
+      - name: Check port 3389
+        run: |
+          netstat -ano | findstr 3389
+
+      - name: Check RDP Windows Feature
+        run: |
+          Get-WindowsFeature -Name RDS-RD-Server
